@@ -1,1 +1,28 @@
-<h1>Hunchr Trading App</h1>
+<h1>Hunchr Trading App</h1><br/><br/>
+<div class="form-group">
+    <%= form_tag root_path, :method => 'POST' do %>
+        <%= text_field_tag 'id', nil, placeholder: "Enter Company Ticker Symbol", size: 50, class: 'form-control' %>
+        <%= submit_tag "Look Up Stock Quote", class: 'btn btn-primary' %>
+</div>
+<% end %>
+
+
+<br/><br/>
+
+<% if @stock %>
+    <strong>Company Name: </strong><%= @stock.company_name %> - <%= @stock.symbol %><br/>
+    <strong>Listed on: </strong><%= @stock.primary_exchange %> <br/>
+    <strong>Sector: </strong><%= @stock.sector %><br/>
+    <strong>Closing Price: </strong><%= @stock.close %><br/>
+    <strong>Day's high price: </strong><%= @stock.high %><br/>
+    <strong>Day's low price: </strong><%= @stock.low %><br/>
+    <strong>Volume: </strong><%= @stock.latest_volume %><br/>
+    <strong>Market Capitalization: </strong><%= @stock.market_cap %><br/>
+    <strong>Price Earning Ratio: </strong><%= @stock.pe_ratio %><br/>
+    <strong>52-week High: </strong><%= @stock.week52_high %><br/>
+    <strong>52-week Low: </strong><%= @stock.week52_low %><br/>
+<% end %>
+
+<% if @error %>
+    <%= @error %>
+<% end %>
