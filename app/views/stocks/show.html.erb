@@ -1,25 +1,29 @@
-<div class="row main">
-  <% if @stock %>
-      <div class="col-xs-4 ">
-      </div>
-      <div class="col-xs-4 ">
-        <div class="panel panel-default">
-          <div class="panel-heading"><b><%= @stock.name %> - <%= @stock.symbol %></b></div>
-          <div class="panel-body"><%= @stock.summary[0]["overview"].inspect.truncate(255) %></div>
-          <ul class="list-group">
-            <li class="list-group-item"><b>Current Ask: </b>$<%= @stock.l %></li>
-            <li class="list-group-item"><b>Earning Per Share: </b>$<%= @stock.eps %></li>
-            <li class="list-group-item"><b>Price/Earning Ratio: </b><%= @stock.pe %></li>
-            <li class="list-group-item"><b>Market Cap: </b><%= @stock.mc %></li>
-            <li class="list-group-item"><b>Stock Open: </b>$<%= @stock.op %></li>
-            <li class="list-group-item"><b>Day's Range: </b>$<%= @stock.lo %> - $<%= @stock.hi %></li>
-            <li class="list-group-item"><b>Year High: </b>$<%= @stock.hi52 %></li>
-            <li class="list-group-item"><b>Year Low: </b>$<%= @stock.lo52 %></li>
-          </ul>
-        </div>
-      </div>
+<% begin %> 
+      <% @stock_quote = StockQuote::Stock.quote(@stock.ticker) %>
+<% rescue StandardError %>
+<% end %>
 
-  <% elsif @error %>
-      <%= @error %>
-  <% end %>
-</div>
+<div class='card'>
+  <div class='card-header'>
+    <h3 class='card-title'><strong><%= @stock_quote.company_name %> - <%= @stock_quote.symbol %></strong></h3>
+  </div>
+  <div class='card-body'>
+    <h1><%= @stock_quote.close %></h1><br/><br/>
+    <strong>Symbol: </strong><%= @stock_quote.symbol %> <br/>
+    <strong>Listed on: </strong><%= @stock_quote.primary_exchange %> <br/>
+    <strong>Sector: </strong><%= @stock_quote.sector %><br/>
+    <strong>Closing Price: </strong><%= @stock_quote.close %><br/>
+    <strong>Day's high price: </strong><%= @stock_quote.high %><br/>
+    <strong>Day's low price: </strong><%= @stock_quote.low %><br/>
+    <strong>Volume: </strong><%= @stock_quote.latest_volume %><br/>
+    <strong>Market Capitalization: </strong><%= @stock_quote.market_cap %><br/>
+    <strong>Price Earning Ratio: </strong><%= @stock_quote.pe_ratio %><br/>
+    <strong>52-week High: </strong><%= @stock_quote.week52_high %><br/>
+    <strong>52-week Low: </strong><%= @stock_quote.week52_low %><br/>
+  </div>
+  
+</div><br/><br/>
+
+<%= link_to 'Edit', edit_stock_path(@stock), class: 'btn btn-primary' %> |
+<%= link_to 'Destroy', stock_path(@stock), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %> |
+<%= link_to 'Back', stocks_path, class: 'btn btn-primary' %>
